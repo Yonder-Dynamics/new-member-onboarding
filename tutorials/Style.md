@@ -9,7 +9,7 @@ decisions made during its design
 
 This [website](https://12factor.net/) is a great starting place for large scale
 system design. We won't repeat the article contents here, but we will reiterate
-that a developmer-friendly and fast-moving code base starts with these simple
+that a developer-friendly and fast-moving code base starts with these simple
 policies. These practices are widely used in industry, and many cutting edge
 tools such are designed to support organizations using this design approach.
 
@@ -56,7 +56,8 @@ of IO at the top level of an executable makes most of the codebase
 accessable to unit testing, and also makes it easier to reconfigure or
 redirect the IO. Here is an example architecture taking advantage of this
 design approach:
-1. Parsing Layer
+1. __Parsing Layer__
+
     The top level of an executable should only process command line arguments.
     These arguments should be organzied into the generic config format expected
     by the Configuration Layer descibed below. This layer could also read
@@ -64,7 +65,8 @@ design approach:
     expected by the Configuration Layer. This layer should not do anything
     except parsing and organizing configuration, or else these is risk of
     duplicating functionality if new sources of configuration are added later.
-2. Configuration Layer
+2. __Configuration Layer__
+
     The configuration layer takes a generic configuration object (ex: a python
     dict) that determines the value of some dynamic elements of the program's
     behavior. This design allows for the source of configuration to easily be
@@ -78,7 +80,8 @@ design approach:
     Layer would a function that, given the URL of a Redis instance and the name
     of the client, creates a connection pool to the given URL and passes it
     down to the IO layer to use.
-4. IO Layer
+4. __IO Layer__
+
     This is the beginning of the  the "business logic" of the program. This
     layer executes function calls into the Logic Layer, and routes return
     values to the external environment using generic connection objects such as
@@ -90,7 +93,8 @@ design approach:
     messages on a Redis topic, parses information out of the message, passes
     the information to a function, then serializes the returned information
     and writes it to another Redis topic.
-5. Logic Layer
+5. __Logic Layer__
+
     This is the rest of the "business logic". All functions in the Logic Layer
     must be stateless and contain no side effects. The Logic Layer does not
     make use of connections whatsoever; all input is received though the
